@@ -1,0 +1,18 @@
+/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css?family=Lato:400,700|Nunito:400,700');
+html,body{
+    height: 100%;
+}
+html{
+    background-color: turquoise;
+}
+html, body { height: 100%;
+    width: 100%;
+display: flex;
+justify-content:center; 
+align-items: center;
+background-color: turquoise;}
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

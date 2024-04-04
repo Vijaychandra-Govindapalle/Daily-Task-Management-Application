@@ -1,0 +1,193 @@
+
+.taskmanagement{
+    height:100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    margin: 0;
+}
+.taskmanagement .taskview{
+    display: flex;
+    height: 500px;
+    width: 1000px;
+    overflow: hidden;
+    
+}
+.taskmanagement .taskview .list{
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    background-color: white;
+    padding: 35px;
+}
+.taskmanagement .taskview .tasks{
+    display: flex;
+    flex-grow: 1;
+    background-color: aliceblue;
+    padding: 35px;
+}
+h2{
+    color: turquoise;
+    text-transform: uppercase;
+}
+.list .listitemscont{
+    height: 70%;
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+.list .listitemscont .listitem {
+    height: 30px;
+    width: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: aliceblue;
+    margin-top: 10px;
+    border-radius: 5px;
+    
+   
+}
+
+.list .listitemscont .listitem span{
+    color : black
+}
+
+.list .listitemscont .listitem:hover{
+    background-color:lightgray;
+    cursor:pointer;
+}
+.list .listitemscont .listitem:active{
+    transform: scale(0.95);
+}
+.list .listitemscont .listitem.selected{
+    background-color:lightseagreen
+}
+
+.list .addlist{
+    background-color:  rgb(52, 234, 52);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 35px;
+    width: 200px;
+    position: absolute;
+    bottom: 20px;
+    border-radius: 10px;
+    transition: ease 0.2s;
+    border: 0;
+    top: 540px;
+    font-size: large;
+   
+}
+.list .addlist:hover{
+    cursor: pointer;
+    background-color:lawngreen;
+    color: white;
+}
+.list .addlist:active{
+    transform: scale(0.95);
+}
+.tasks{
+    position: relative;
+}
+.tasks .taskitemscont{
+    position: absolute;
+    margin-top: 70px;
+   margin-left: 0;
+}
+.tasks .taskitemscont .taskitem{
+        display: flex;
+       
+        align-items: center;
+        width: 600px;
+        height: 35px;
+        background-color: white;
+        padding: 5px;
+        padding-left: 20px;
+        margin-top: 10px;
+        border-radius: 5px;
+        transition :ease 0.2s;
+      
+}
+.addtask{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    left: 600px;
+    top: 300px;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    background-color: greenyellow;
+    transition: ease 0.2s;
+
+
+}
+ .addtask span{
+    font-size: x-large;
+ }
+ .addtask:hover{
+    background-color: green;
+    cursor: pointer;
+    color: white;
+ }
+ .tasks .taskitemscont .taskitem:not(.completed):hover{
+    box-shadow: 0 4px 8px 0 gray;
+    cursor: pointer;
+ }
+ .tasks .taskitemscont .taskitem:not(.completed):active{
+    transform: scale(0.95);
+ }
+ .tasks .taskitemscont .taskitem.completed{
+    text-decoration: line-through;
+   opacity: 0.6;
+ }
+ .search {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    height: 40px;
+    max-width: 200px;
+    min-width: 60px;
+    z-index: 2;
+    top:120px;
+    left: 1000px;
+    font-size: x-large;
+    background-color: white;
+    border-radius: 7px;
+ }
+.search input{
+    height: 30px;
+    border: none;
+   border-radius: 5px;
+   border: 0;
+   outline: 0;
+}
+.calendar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    z-index: 2;
+    top:100px;
+    left: 10px;
+    font-size: x-large;
+    border-radius: 7px;
+}
+button.example-custom-date-class {
+    background: orange;
+    border-radius: 100%;
+  }
+  .time{
+    top: 200px;
+    left: 10px;
+    
+  }
+ 
+
+
+

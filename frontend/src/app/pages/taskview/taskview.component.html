@@ -1,0 +1,52 @@
+
+<div class="taskmanagement">
+   <!--<div class="calendar">
+    <mat-form-field>
+        <input matInput [matDatepicker]="picker" placeholder= "Choose a date" [value]="selectedDate" (dateChange)="onDateSelected($event)">
+       <mat-datepicker-toggle matSuffix [for]="picker">
+        </mat-datepicker-toggle>
+        <mat-datepicker [dateClass]="dateClass" #picker></mat-datepicker>
+      </mat-form-field>
+      </div>-->
+     
+      <div class="time"><input [ngxTimepicker]="timepicker" (timeSet)="onTimeSelected($any($event))">
+        <ngx-material-timepicker #timepicker></ngx-material-timepicker>
+      </div>
+      <div class="calendar">
+      <mat-form-field class="example-full-width">
+        
+        <input matInput [matDatepicker]="picker" [value]="selectedDate" (dateChange)="onDateSelected($event)" #datePickerInput>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker [dateClass]="dateClass" #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+      <div class="search">
+        <mat-icon aria-hidden="false" aria-label="search icon" fontIcon="search"></mat-icon>
+        <input type="text" (keypress)="handlekeypress($event)">
+      </div>
+    <div class="taskview">
+        <div class="list">
+            <h2>Lists</h2>
+            <div class="listitemscont">
+             <a  (click)="onListselected(list.title)" class="listitem" *ngFor="let list of lists" 
+             [ngClass]="{'selected': list.title === selectedListTitle}" >
+                <span>{{list.title}}</span>
+             </a>
+            </div>
+          <button class="addlist" routerLink="/new-list">Create list +</button>
+        </div>
+        <div class="tasks">
+            <h2>Tasks</h2>
+        <div class="taskitemscont">
+            <div class="taskitem" *ngFor="let task of tasks" (click)="onTaskClick(task)" [ngClass]="{'completed':task.completed}">
+                <span>{{task.title}}</span>
+            </div>
+            <div routerLink="/new-task" class="addtask">
+                <span>+</span>
+            </div>
+            </div>
+        </div>
+        </div>
+        </div>
+        
+        

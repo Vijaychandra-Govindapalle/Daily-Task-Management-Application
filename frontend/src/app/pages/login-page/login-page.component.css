@@ -1,0 +1,14 @@
+@import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css";
+@import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/regular.min.css";
+.centeredcontent{
+   display: flex;
+   flex-direction: column;
+   justify-content: space-between;
+    background-color: white;
+    padding: 30px;
+    border-radius: 7px;
+}
+h1{
+    text-transform: uppercase;
+    font-weight: bold;
+}
