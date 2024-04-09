@@ -1,17 +1,19 @@
 
 <div class="taskmanagement">
-   <!--<div class="calendar">
+   <div class="calendar">
     <mat-form-field>
         <input matInput [matDatepicker]="picker" placeholder= "Choose a date" [value]="selectedDate" (dateChange)="onDateSelected($event)">
        <mat-datepicker-toggle matSuffix [for]="picker">
         </mat-datepicker-toggle>
         <mat-datepicker [dateClass]="dateClass" #picker></mat-datepicker>
       </mat-form-field>
-      </div>-->
+      </div>
+     
      
       <div class="time"><input [ngxTimepicker]="timepicker" (timeSet)="onTimeSelected($any($event))">
         <ngx-material-timepicker #timepicker></ngx-material-timepicker>
       </div>
+      <!--
       <div class="calendar">
       <mat-form-field class="example-full-width">
         
@@ -19,7 +21,7 @@
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker [dateClass]="dateClass" #picker></mat-datepicker>
       </mat-form-field>
-    </div>
+    </div>-->
       <div class="search">
         <mat-icon aria-hidden="false" aria-label="search icon" fontIcon="search"></mat-icon>
         <input type="text" (keypress)="handlekeypress($event)">

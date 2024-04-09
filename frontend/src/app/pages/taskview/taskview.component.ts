@@ -20,6 +20,7 @@ import {NgModule} from '@angular/core';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
+
 @Component({
   selector: 'app-taskview',
   encapsulation: ViewEncapsulation.None,
