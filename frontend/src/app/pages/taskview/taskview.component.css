@@ -187,7 +187,19 @@ button.example-custom-date-class {
     left: 10px;
     
   }
- 
-
-
+  .taskview .list .listitemscont .listitem #listitemname #startTime {
+      font-size: x-small;
+      margin-right: 20px;
+      top: 0;
+      margin-left: 10px;
+  }
+  
+  .taskview .list .listitemscont .listitem #listitemname #endTime {
+    font-size: x-small;
+    margin-left: 20px;
+    top: 0;
+    margin-right: 10px;
+    
+  }
+  
 

@@ -13,16 +13,18 @@ import { Time } from '@angular/common';
 export class TaskService {
   selectedDate$: BehaviorSubject<Date | null> = new BehaviorSubject<Date | null>(null);
   selectedlist$: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
-  selectedTime$: BehaviorSubject<Time| null> = new BehaviorSubject<Time | null>(null);
+  selectedTime1$: BehaviorSubject<Date| null> = new BehaviorSubject<Date| null>(null);
+  selectedTime2$: BehaviorSubject<Date| null> = new BehaviorSubject<Date| null>(null);
+
 
   constructor(private webReqService: WebRequestService) { }
 
-  createList(title: string, selectedDate: Date, selectedTime: Time) {
-    const timeString = `${selectedTime.hours}:${selectedTime.minutes}`;
+  createList(title: string, selectedDate: Date, startingTime: Date, endingTime: Date) {
     const payload = {
       title: title,
       date: selectedDate.toISOString(),
-      Time: timeString
+      startTime: startingTime.toISOString(),
+      endTime: endingTime.toISOString()
     };
     return this.webReqService.post('lists', payload);
   }
@@ -37,9 +39,9 @@ export class TaskService {
   fetchListsByDate(selectedDate: Date): Observable<any> {
     return this.webReqService.get(`lists`,selectedDate);
   }
-  fetchlistsByTime(selectedTime: Time,selectedDate: Date): Observable<any> {
+  /*fetchlistsByTime(selectedTime: Time,selectedDate: Date): Observable<any> {
     return this.webReqService.get(`lists`,selectedDate);
-  }
+  }*/
   fetchtasks(listtitle: string,selectedDate:Date,selectedTime: Time){
     return this.webReqService.get(`lists`,selectedDate,selectedTime,undefined,listtitle)
   }
