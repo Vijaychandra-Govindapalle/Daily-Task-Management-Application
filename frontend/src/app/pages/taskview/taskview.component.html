@@ -1,17 +1,21 @@
 
 <div class="taskmanagement">
-   <!--<div class="calendar">
+   <div class="calendar">
     <mat-form-field>
         <input matInput [matDatepicker]="picker" placeholder= "Choose a date" [value]="selectedDate" (dateChange)="onDateSelected($event)">
        <mat-datepicker-toggle matSuffix [for]="picker">
         </mat-datepicker-toggle>
         <mat-datepicker [dateClass]="dateClass" #picker></mat-datepicker>
       </mat-form-field>
-      </div>-->
-     
-      <div class="time"><input [ngxTimepicker]="timepicker" (timeSet)="onTimeSelected($any($event))">
-        <ngx-material-timepicker #timepicker></ngx-material-timepicker>
       </div>
+      <ejs-timepicker  [min]='minValue' [max]='maxValue' (change)="onTimeSelected1($event)"></ejs-timepicker>
+      <ejs-timepicker  [min]='minValue2' [max]='maxValue2' (change)="onTimeSelected2($event)"></ejs-timepicker>
+      
+     
+      <!--<div class="time"><input [ngxTimepicker]="timepicker" (timeSet)="onTimeSelected($any($event))">
+        <ngx-material-timepicker #timepicker></ngx-material-timepicker>
+      </div>-->
+      <!--
       <div class="calendar">
       <mat-form-field class="example-full-width">
         
@@ -19,7 +23,7 @@
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker [dateClass]="dateClass" #picker></mat-datepicker>
       </mat-form-field>
-    </div>
+    </div>-->
       <div class="search">
         <mat-icon aria-hidden="false" aria-label="search icon" fontIcon="search"></mat-icon>
         <input type="text" (keypress)="handlekeypress($event)">
@@ -30,7 +34,9 @@
             <div class="listitemscont">
              <a  (click)="onListselected(list.title)" class="listitem" *ngFor="let list of lists" 
              [ngClass]="{'selected': list.title === selectedListTitle}" >
-                <span>{{list.title}}</span>
+                <span id="listitemname">
+                  <span id="startTime">{{list.startTime | date: 'hh:mm a'}}</span>{{list.title}}<span id="endTime">{{list.endTime | date: 'hh:mm a'}}</span>
+                </span>
              </a>
             </div>
           <button class="addlist" routerLink="/new-list">Create list +</button>

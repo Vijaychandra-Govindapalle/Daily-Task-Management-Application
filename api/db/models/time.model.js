@@ -5,9 +5,13 @@ const TimeSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
-   Time: {
-        type: String,
+   startTime: {
+        type: Date,
         required: true,
+    },
+    endTime: {
+        type: Date,
+        required: true
     }
 })
 

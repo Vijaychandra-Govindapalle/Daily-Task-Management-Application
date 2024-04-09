@@ -17,10 +17,10 @@ export class WebRequestService {
     if(date){
     params = params.set('date', date.toISOString());
     }
-    if(Time){
+    /*if(Time){
       const time = `${Time.hours}:${Time.minutes}`;
         params = params.set('Time', time);
-    }
+    }*/
     if (title) {
       params = params.set('title',title);
     }

@@ -138,7 +138,8 @@ app.post('/lists', (req, res) => {
       let newList = new List({
         title: req.body.title,
         Day: req.body.date,
-        Time: req.body.time
+        startTime: req.body.startTime,
+        endTime: req.body.endTime
       });
   
       newList.save().then((listDoc) => {
@@ -164,9 +165,6 @@ app.patch('/lists', (req, res) => {
   }
   if (req.body.date) {
       query.Day = req.body.date;
-  }
-  if (req.body.time) {
-    query.Time = req.body.time
   }
 
   // Update the specified list or task with the new values specified in the JSON body of the request

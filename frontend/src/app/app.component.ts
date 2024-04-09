@@ -4,6 +4,8 @@ import { TaskviewComponent } from "./pages/taskview/taskview.component";
 import { NewListComponent } from "./pages/new-list/new-list.component";
 import { RouterModule } from '@angular/router';
 import { NewTaskComponent } from './pages/new-task/new-task.component';
+import { HttpClient } from '@angular/common/http';
+
 
 
 @Component({

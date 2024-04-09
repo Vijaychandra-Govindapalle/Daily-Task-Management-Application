@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { TaskService } from '../../task.service';
 import { DateFilterFn, MatCalendar, MatCalendarCell, MatDatepickerInputEvent, MatDatepickerModule, MatMonthView } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
@@ -19,13 +19,17 @@ import { map } from 'rxjs/operators';
 import {NgModule} from '@angular/core';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { TimePickerComponent, TimePickerModule } from '@syncfusion/ej2-angular-calendars';
+import { enableRipple } from '@syncfusion/ej2-base';
+enableRipple(true);
+
 
 @Component({
   selector: 'app-taskview',
   encapsulation: ViewEncapsulation.None,
   standalone: true,
   providers: [provideNativeDateAdapter()],
-  imports: [MatDatepicker,MatSlideToggleModule,MatInputModule,MatNativeDateModule,MatFormFieldModule,MatIconModule,NewListComponent,RouterModule,CommonModule,MatDatepickerModule, MatInputModule, NgxMaterialTimepickerModule],
+  imports: [MatDatepicker,MatSlideToggleModule,MatInputModule,MatNativeDateModule,MatFormFieldModule,MatIconModule,NewListComponent,RouterModule,CommonModule,MatDatepickerModule, MatInputModule, NgxMaterialTimepickerModule, TimePickerModule],
   templateUrl: './taskview.component.html',
   styleUrl: './taskview.component.css'
 })
@@ -38,6 +42,20 @@ export class TaskviewComponent {
   selectedListTitle: string | null = null;
   highlightedDates: { [key: string]: number[] } = {}; // Initialize as an empty object
   // Object to store highlighted dates for each month
+    public month: number = new Date().getMonth();
+    public fullYear: number = new Date().getFullYear();
+    public date: number = new Date().getDate();
+    public dateValue: Date = new Date(this.fullYear, this.month , this.date, 10, 0, 0);
+    public minValue: Date = new Date(this.fullYear, this.month , this.date, 7, 0, 0);
+    public minValue2: Date = new Date(this.fullYear, this.month , this.date, 7, 0, 0);
+    public maxValue: Date = new Date(this.fullYear, this.month, this.date, 23, 0 ,0);
+    public maxValue2: Date = new Date(this.fullYear, this.month, this.date, 23, 0 ,0);
+    @ViewChild('timePicker1') timePicker1!: TimePickerComponent;
+    @ViewChild('timePicker2') timePicker2!: TimePickerComponent;
+    selectedTime1: Date | null = null;
+    selectedTime2: Date | null = null;
+    previousselectedTime: Date | null = null
+    isTime1Selected: boolean = false;
 
   constructor(private taskService: TaskService) {}
 
@@ -47,6 +65,11 @@ export class TaskviewComponent {
     // Retrieve the selected date from the service on component initialization
     this.taskService.selectedDate$.subscribe(date => {
       this.selectedDate = date;
+      this.month = date?.getMonth()!;
+      this.fullYear = date?.getFullYear()!;
+      this.date = date?.getDate()!;
+     
+
     });
 
     this.taskService.selectedlist$.subscribe(listTitle => {
@@ -63,6 +86,25 @@ export class TaskviewComponent {
     this.taskService.fetchListsByDate(date).subscribe({
       next: (lists: any) => {
         this.lists = lists;
+        for (const list of this.lists) {
+          const endTime = new Date(list.endTime);
+          if (!this.previousselectedTime || endTime > this.previousselectedTime) {
+            this.previousselectedTime =  endTime;
+          }
+        }
+        if (this.previousselectedTime) {
+          const selectedHour = this.previousselectedTime.getHours();
+          const selectedMinute = this.previousselectedTime.getMinutes();
+    
+          // Set the minimum value for the first time picker to be  after the  latest end selected time 
+          const minTime1 = new Date();
+          minTime1.setHours(selectedHour);
+          minTime1.setMinutes(selectedMinute);
+    
+          // Update the min value for the first time picker
+          this.minValue = minTime1;
+          this.minValue2 = minTime1
+        }
         const monthKey = `${date.getFullYear()}-${date.getMonth()}`;
         if (this.lists && this.lists.length >= 9) {
           if (!this.highlightedDates[monthKey]) {
@@ -80,6 +122,7 @@ export class TaskviewComponent {
   }
 
   onDateSelected(event: MatDatepickerInputEvent<Date>): void {
+    this.selectedTime1 = null;
     this.selectedDate = event.value!;
     this.taskService.selectedDate$.next(this.selectedDate);
     if (this.selectedDate !== null) {
@@ -90,16 +133,32 @@ export class TaskviewComponent {
     }
   }
 
-  onTimeSelected(event: Time) {
-    this.selectedTime = event;
-    this.taskService.selectedTime$.next(this.selectedTime);
-    if (this.selectedTime !== null) {
-      this.tasks = [];
-    } else {
-      alert('Please select the date')
-    }
+  onTimeSelected1(event: any): void {
+    // Update the min value for the first time picker based on the selected time in the previous time picker
+    this.selectedTime1 = event.value;
+    
+    this.taskService.selectedTime1$.next(this.selectedTime1);
+    if (this.selectedTime1) {
+      const selectedHour = this.selectedTime1.getHours();
+      const selectedMinute = this.selectedTime1.getMinutes();
 
+      // Set the minimum value for the second time picker to be 30 minutes after the selected time in the first time picker
+      const minTime2 = new Date();
+      minTime2.setHours(selectedHour);
+      minTime2.setMinutes(selectedMinute + 30);
+
+      // Update the min value for the second time picker
+      this.minValue2 = minTime2;
+    }
   }
+
+
+  onTimeSelected2(event: any): void {
+    this.selectedTime2 = event.value;
+    this.taskService.selectedTime2$.next(this.selectedTime2);
+    // Handle time selection for the second time picker if needed
+  }
+
 
   onListselected(listtitle: string): void {
     this.taskService.fetchtasks(listtitle, this.selectedDate!,this.selectedTime!).subscribe((tasks: Task[]) => {
