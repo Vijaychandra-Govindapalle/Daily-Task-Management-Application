@@ -35,8 +35,9 @@ export class NewListComponent {
   }
   createNewList(title: string, date: Date) {
     if (this.selectedDate != null && title.trim() !== '') {
+      if(this.startTime != null && this.endTime != null){
         this.taskservice.fetchListsByDate(this.selectedDate).subscribe((lists: List[]) => {
-          if (lists.length >= 9) {
+          if (lists.length >= 15) {
             alert('You are busy for the day');
           } else {
             this.taskservice.Search(title, this.selectedDate!).subscribe((lists: List[]) => {
@@ -52,7 +53,9 @@ export class NewListComponent {
             });
           }
         });
-      } 
+      }else{
+        this.errormessage  = 'Please select the start time and end time'
+      } }
      else {
       this.errormessage = 'Please select the date';
     }
