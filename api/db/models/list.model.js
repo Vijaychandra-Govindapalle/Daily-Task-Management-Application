@@ -18,6 +18,10 @@ const ListSchema = new mongoose.Schema({
     endTime: {
         type: Date,
         required: true
+    },
+    _userId: {
+        type: mongoose.Types.ObjectId,
+        required: true
     }
 })
 
