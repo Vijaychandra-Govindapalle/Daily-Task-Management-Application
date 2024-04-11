@@ -161,10 +161,17 @@ export class TaskviewComponent {
 
 
   onListselected(listtitle: string): void {
+    const emptytext = document.getElementById('empty-text')
     this.taskService.fetchtasks(listtitle, this.selectedDate!,this.selectedTime!).subscribe((tasks: Task[]) => {
+      if(tasks.length == 0){
+        emptytext!.innerText = 'There are no tasks here. Please click the add button to add.';
+      }else{
+        emptytext!.innerText = '';
+      }
       if (this.selectedListTitle === listtitle) {
         this.selectedListTitle = null; // Deselect if already selected
         this.tasks = [];
+        
       } else {
         this.selectedListTitle = listtitle; // Select the clicked item
         this.taskService.selectedlist$.next(this.selectedListTitle);
