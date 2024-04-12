@@ -21,6 +21,8 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { TimePickerComponent, TimePickerModule } from '@syncfusion/ej2-angular-calendars';
 import { enableRipple } from '@syncfusion/ej2-base';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { WebReqInterceptor } from '../../web-req.interceptor';
 enableRipple(true);
 
 
@@ -28,8 +30,8 @@ enableRipple(true);
   selector: 'app-taskview',
   encapsulation: ViewEncapsulation.None,
   standalone: true,
-  providers: [provideNativeDateAdapter()],
-  imports: [MatDatepicker,MatSlideToggleModule,MatInputModule,MatNativeDateModule,MatFormFieldModule,MatIconModule,NewListComponent,RouterModule,CommonModule,MatDatepickerModule, MatInputModule, NgxMaterialTimepickerModule, TimePickerModule],
+  providers: [provideNativeDateAdapter(),{provide :HTTP_INTERCEPTORS, useClass: WebReqInterceptor, multi: true}],
+  imports: [MatDatepicker,MatSlideToggleModule,MatInputModule,MatNativeDateModule,MatFormFieldModule,MatIconModule,NewListComponent,RouterModule,CommonModule,MatDatepickerModule, MatInputModule, NgxMaterialTimepickerModule, TimePickerModule,HttpClientModule],
   templateUrl: './taskview.component.html',
   styleUrl: './taskview.component.css'
 })

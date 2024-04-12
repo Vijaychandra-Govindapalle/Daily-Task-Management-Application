@@ -159,97 +159,124 @@ app.post('/lists',authenticate, (req, res) => {
         List.findOne({
             title: req.body.title,
             _userId: req.user_id
-        }).then((user) => {
-            if(user) {
-                // user object is valid
-                // therefore the currently authenticated user can create new tasks
+        }).then((list) => {
+            if (list) {
                 return true;
             }
+            return false
 
-           //else - the user object is undefined
-           return false; 
-        }).then((canCreateTask) => {
-            if( canCreateTask) {
-              let newTask = new Task({
-                title: req.body.title,
-                listTitle: req.body.title
-              });
-              newTask.save().then((newTaskDoc) => {
-                res.send(newTaskDoc);
-              })
+        }).then((canCreateTasks) => {
+            if(canCreateTasks){
+                // list object is valid
+                // therefore the currently authenticated user can create new tasks
+                let newTask = new Task({
+                    title: req.body.tasktitle,
+                    listTitle: req.body.listtitle,
+                    Day: req.body.date,
+                });
+                newTask.save().then((taskdoc) => {
+                    res.send(taskdoc);
+                }).catch(error => {
+                    res.status(500).send("Error creating task: " + error.message);
+                });
             } else {
-                res.sendStatus(404)
+                res.sendStatus(404);
             }
-        })
-      let newTask = new Task({
-        title: req.body.tasktitle,
-        listTitle: req.body.listtitle,
-        Day: req.body.date,
-      });
-      newTask.save().then((taskdoc) => {
-        res.send(taskdoc);
-      }).catch(error => {
-        res.status(500).send("Error creating task: " + error.message);
-      });
+
+        })  
+                
+               
     } else {
-        
-      let newList = new List({
-        title: req.body.title,
-        _userId: req.user_id,
-        Day: req.body.date,
-        startTime: req.body.startTime,
-        endTime: req.body.endTime
-      });
-  
-      newList.save().then((listDoc) => {
-        res.send(listDoc);
-      }).catch(error => {
-        res.status(500).send("Error creating list: " + error.message);
-      });
+        // Code for creating a new list
+        let newList = new List({
+            title: req.body.title,
+            _userId: req.user_id,
+            Day: req.body.date,
+            startTime: req.body.startTime,
+            endTime: req.body.endTime
+        });
+    
+        newList.save().then((listDoc) => {
+            res.send(listDoc);
+        }).catch(error => {
+            res.status(500).send("Error creating list: " + error.message);
+        });
     }
-  });
+    
+    });
 
 /**
  * PATH /lists
  * Purpose: Update a specified list
  */
-app.patch('/lists',authenticate, (req, res) => {
-  // Construct query object based on query parameters in the request
-  let query = {};
-  if (req.body.taskTitle) {
-      query.title = req.body.tasktitle;
-  }
-  if (req.body.listTitle) {
-      query.listTitle = req.body.listtitle;
-  }
-  if (req.body.date) {
-      query.Day = req.body.date;
-  }
-  
+app.patch('/lists', authenticate, (req, res) => {
+    // Construct query object based on query parameters in the request
+    let query = {};
+    if (req.body.taskTitle) {
+        query.title = req.body.tasktitle;
+    }
+    if (req.body.listTitle) {
+        query.listTitle = req.body.listtitle;
+    }
+    if (req.body.date) {
+        query.Day = req.body.date;
+    }
 
-  // Update the specified list or task with the new values specified in the JSON body of the request
-  let updateData = req.body;
+    // Update the specified list or task with the new values specified in the JSON body of the request
+    let updateData = req.body;
 
-  // Determine whether to update a task or a list based on the presence of 'listtitle' in the query
-  let updatePromise;
-  if (req.body.listTitle) {
-      updatePromise = Task.findOneAndUpdate(query, updateData);
-  } else {
-    query._userId = req.user_id
-      updatePromise = List.findOneAndUpdate(query, updateData);
-  }
+    // Determine whether to update a task or a list based on the presence of 'listtitle' in the query
+    if (req.body.listtitle) {
+        List.findOne({
+            listTitle: req.body.listtitle,
+            _userId: req.user_id
+        }).then((list) => {
+            if (list) {
+                return true
+            }
+            return false
+        }).then((canUpdateTasks) => {
+            if(canUpdateTasks){
+                Task.findOneAndUpdate(query, updateData)
+                .then((result) => {
+                    if (result) {
+                        res.send({ message: 'Updated Successfully' });
+                    } else {
+                        res.send({ message: 'No matching record' }); // Provide a more specific error message
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error updating:", error);
+                    res.send({ message: 'Error updating: ' + error.message });
+                });
 
-  updatePromise.then((result) => {
-      if (result) {
-          res.send({message : 'Updated Successfully'});
-      } else {
-        res.send({message : 'No matching record'});// Provide a more specific error message
-      }
-  }).catch((error) => {
-      console.error("Error updating:", error);
-      res.send({message : 'Error updating: ' +error.message});
-  });
+            }
+              
+        
+                // list object is valid
+                // therefore the currently authenticated user can update tasks
+               
+             else {
+                res.send({ message: 'Unauthorized' }); // User does not have permission to update tasks
+            }
+        });
+    } else {
+        query._userId = req.user_id;
+        List.findOneAndUpdate(query, updateData)
+            .then((result) => {
+                if (result) {
+                    res.send({ message: 'Updated Successfully' });
+                } else {
+                    res.send({ message: 'No matching record' }); // Provide a more specific error message
+                }
+            })
+            .catch((error) => {
+                console.error("Error updating:", error);
+                res.send({ message: 'Error updating: ' + error.message });
+            });
+    }
 });
+
 
 /**
  * Delete /lists/:id
@@ -283,34 +310,56 @@ app.delete('/lists', authenticate, (req, res) => {
     // Check if it's a task deletion or a list deletion
     if (req.body.tasktitle) {
         // Delete task
-        Task.findOneAndDelete(query)
-            .then((removedTaskDoc) => {
-                if (removedTaskDoc) {
-                    res.send(removedTaskDoc);
-                } else {
-                    res.status(404).send("Task not found");
-                }
-            })
-            .catch((error) => {
-                console.error("Error deleting task:", error);
-                res.status(500).send("Error deleting task: " + error.message);
-            });
+        List.findOne({
+            listTitle: req.body.listtitle,
+            _userId: req.user_id
+        }).then((list) => {
+            if (list) {
+                // list object is valid
+                // therefore the currently authenticated user can update tasks
+                return true
+            }
+            return false
+        }).then((canDeleteTasks) => {
+            if(canDeleteTasks){
+                Task.findOneAndDelete(query)
+                .then((removedTaskDoc) => {
+                    if (removedTaskDoc) {
+                        res.send(removedTaskDoc);
+                    } else {
+                        res.status(404).send("Task not found");
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error deleting task:", error);
+                    res.status(500).send("Error deleting task: " + error.message);
+                });
+
+            }
+
+        
+               
+             else {
+                res.send({ message: 'Unauthorized' }); // User does not have permission to update tasks
+            }
+        })
     } else {
         // Delete list
         List.findOneAndDelete(query)
-            .then((removedListDoc) => {
-                if (removedListDoc) {
+        .then((removedListDoc) => {
+            if (removedListDoc) {
+                // Delete all the tasks that are in the deleted list
+                deleteTasksFromList(req.body.listtitle).then(() => {
                     res.send(removedListDoc);
-                    // Delete all the tasks that are in the deleted list
-                    deleteTasksFromList(req.body.listtitle);
-                } else {
-                    res.status(404).send("List not found");
-                }
-            })
-            .catch((error) => {
-                console.error("Error deleting list:", error);
-                res.status(500).send("Error deleting list: " + error.message);
-            });
+                }).catch((error) => {
+                    console.error("Error deleting tasks from list:", error);
+                    res.status(500).send("Error deleting tasks from list: " + error.message);
+                });
+            } else {
+                res.status(404).send("List not found");
+            }
+        })
+    
     }
 });
 
