@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 import { WebRequestService } from './web-request.service';
 import { CanActivate, Router } from '@angular/router';
 import { shareReplay, tap } from 'rxjs';
-import { callbackify } from 'util';
+
+
 
 
 @Injectable({
@@ -19,7 +20,7 @@ export class AuthService {
   isAuthenticated(): boolean {
     // Check if the user is authenticated based on your implementation
     // For example, you can check if the access token is present in localStorage
-    const accessToken = localStorage.getItem('x-access-token');
+    const accessToken =  localStorage.getItem('x-access-token');
     return !!accessToken; // Return true if accessToken exists, false otherwise
   }
 
@@ -35,7 +36,7 @@ export class AuthService {
   }
 
   getAccessToken() {
-    return localStorage.getItem('x-access-item')
+    return localStorage.getItem('x-access-token')
   }
 
   getRefresToken() {
@@ -43,20 +44,20 @@ export class AuthService {
   }
 
   setAccessToken(accessToken: string) {
-   localStorage.setItem('x-access-token', accessToken)
+    localStorage.setItem('x-access-token', accessToken)
   }
 
 
   private setSession(userId: string, accessToken: string, refreshToken: string) {
     localStorage.setItem('user-id', userId);
-    localStorage.setItem('access-Token', accessToken);
-    localStorage.setItem('refresh-token', refreshToken);
+    localStorage.setItem('x-access-token', accessToken);
+    localStorage.setItem('x-refresh-token', refreshToken);
   }
 
   private removeSession() {
     localStorage.removeItem('user-id');
-    localStorage.removeItem('access-Token');
-    localStorage.removeItem('refresh-token');
+    localStorage.removeItem('x-access-token');
+    localStorage.removeItem('x-refresh-token');
   }
 
   logout() {
