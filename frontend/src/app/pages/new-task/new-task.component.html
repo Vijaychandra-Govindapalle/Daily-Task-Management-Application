@@ -5,7 +5,8 @@
         <div class="selected-date" *ngIf="selectedDate">Selected Date: {{ selectedDate | date: 'dd/MM/yyyy' }}</div>
         <div class="selected-list" *ngIf="selectedDate">Selected List: {{listTitle}}</div>
         </div>
-      <input #tasktitle type="text" id="tasktitle" placeholder="Enter the task">
+        <label for="tasktitle"></label>
+      <input id="tasktitle" #tasktitle type="text" id="tasktitle" placeholder="Enter the task">
       <div class="errormessage1" *ngIf="errormessage1">
         <p>{{errormessage1}}</p>
       </div>

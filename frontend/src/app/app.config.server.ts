@@ -3,6 +3,9 @@ import { provideServerRendering } from '@angular/platform-server';
 import { appConfig } from './app.config';
 import { WebReqInterceptor } from './web-req.interceptor';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import 'localstorage-polyfill'
+
+global['localStorage'] = localStorage;
 
 const serverConfig: ApplicationConfig = {
   providers: [

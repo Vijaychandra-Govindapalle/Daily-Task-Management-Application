@@ -249,5 +249,11 @@ export class TaskviewComponent {
       localStorage.setItem('highlightedDates', JSON.stringify(this.highlightedDates));
     }
   }
+
+  onDeleteClickList() {
+    
+    this.taskService.deleteList(this.selectedListTitle!)
   
+  
+}
 }

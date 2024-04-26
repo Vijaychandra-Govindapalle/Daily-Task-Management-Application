@@ -17,24 +17,31 @@ export class AuthService {
 
   constructor(private http: HttpClient, private webService: WebRequestService, private router: Router) { }
 
-  isAuthenticated(): boolean {
-    // Check if the user is authenticated based on your implementation
-    // For example, you can check if the access token is present in localStorage
-    const accessToken =  localStorage.getItem('x-access-token');
-    return !!accessToken; // Return true if accessToken exists, false otherwise
-  }
+  
 
   login(email: string, password: string) {
    return this.webService.login(email, password).pipe(
       shareReplay(),
       tap((res: HttpResponse<any>) => {
         // the auth tokens will  be in the header of this response
-        this.setSession(res.body.id, res.headers.get('x-access-token')!, res.headers.get('x-refresh-token')!);
+        this.setSession(res.body._id, res.headers.get('x-access-token')!, res.headers.get('x-refresh-token')!);
         console.log("LOGGED IN!");
       }) 
     )
   }
 
+  
+  signup(email: string, password: string) {
+    return this.webService.signup(email, password).pipe(
+       shareReplay(),
+       tap((res: HttpResponse<any>) => {
+         // the auth tokens will  be in the header of this response
+         this.setSession(res.body._id, res.headers.get('x-access-token')!, res.headers.get('x-refresh-token')!);
+         console.log("Successfully Signed Up!");
+       }) 
+     )
+   }
+ 
   getAccessToken() {
     return localStorage.getItem('x-access-token')
   }
@@ -54,10 +61,47 @@ export class AuthService {
     localStorage.setItem('x-refresh-token', refreshToken);
   }
 
+  isAuthenticated(): boolean {
+    // Check if the user is authenticated based on your implementation
+    // For example, you can check if the access token is present in localStorage
+    const accessToken =  localStorage.getItem('x-access-token');
+    return !!accessToken; // Return true if accessToken exists, false otherwise
+  }
+
   private removeSession() {
     localStorage.removeItem('user-id');
     localStorage.removeItem('x-access-token');
     localStorage.removeItem('x-refresh-token');
+  }
+
+  getUserId() {
+    return localStorage.getItem('user-id')
+  }
+
+  getNewAccessToken() {
+    const refreshToken = this.getRefresToken();
+    const userId = this.getUserId();
+  
+    // Check if refreshToken or userId is null
+    if (!refreshToken || !userId) {
+      // Handle the case where refreshToken or userId is null
+      return;
+    }
+  
+    return this.http.get(`${this.webService.ROOT_URL}/users/me/access-token`, {
+      headers: {
+        'x-refresh-token': refreshToken,
+        '_id': userId
+      },
+      observe: 'response'
+    }).pipe(
+      tap(response => {
+        const accessToken = response.headers.get('x-access-token');
+        if (accessToken) {
+          this.setAccessToken(accessToken);
+        }
+      })
+    );
   }
 
   logout() {

@@ -5,7 +5,8 @@ import { RouterModule } from '@angular/router';
 import { NewTaskComponent } from './pages/new-task/new-task.component';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { inject } from '@angular/core';
-import { authGuard } from './auth.guard';
+import { AuthGuard } from './auth.guard';
+import { SignupComponent } from './pages/signup/signup.component';
 
 export const routes: Routes = [
     {
@@ -23,11 +24,15 @@ export const routes: Routes = [
     {
         path :'lists',
         component : TaskviewComponent,
-        canActivate: [authGuard]
+        canActivate: [AuthGuard]
     },
     {
         path :'Login',
         component : LoginPageComponent
+    },
+    {
+        path :'signup',
+        component : SignupComponent
     }
 
 
