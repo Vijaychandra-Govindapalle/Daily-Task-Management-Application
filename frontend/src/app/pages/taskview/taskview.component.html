@@ -1,16 +1,20 @@
 
 <div class="taskmanagement">
    <div class="calendar">
-    <mat-form-field>
-        <input matInput [matDatepicker]="picker" placeholder= "Choose a date" [value]="selectedDate" (dateChange)="onDateSelected($event)">
+    <mat-form-field >
+      <label for="date" ></label>
+        <input id="date"  matInput [matDatepicker]="picker" placeholder= "Choose a date" [value]="selectedDate" (dateChange)="onDateSelected($event)">
        <mat-datepicker-toggle matSuffix [for]="picker">
         </mat-datepicker-toggle>
         <mat-datepicker [dateClass]="dateClass" #picker></mat-datepicker>
       </mat-form-field>
       </div>
-      <ejs-timepicker  [min]='minValue' [max]='maxValue' (change)="onTimeSelected1($event)"></ejs-timepicker>
-      <ejs-timepicker  [min]='minValue2' [max]='maxValue2' (change)="onTimeSelected2($event)"></ejs-timepicker>
+      <div class="time">
+        
+      <ejs-timepicker id="time1"  [min]='minValue' [max]='maxValue' (change)="onTimeSelected1($event)"></ejs-timepicker>
       
+      <ejs-timepicker id="time2" [min]='minValue2' [max]='maxValue2' (change)="onTimeSelected2($event)"></ejs-timepicker>
+      </div>
      
       <!--<div class="time"><input [ngxTimepicker]="timepicker" (timeSet)="onTimeSelected($any($event))">
         <ngx-material-timepicker #timepicker></ngx-material-timepicker>
@@ -26,11 +30,12 @@
     </div>-->
       <div class="search">
         <mat-icon aria-hidden="false" aria-label="search icon" fontIcon="search"></mat-icon>
-        <input type="text" (keypress)="handlekeypress($event)">
+        <label for="search"></label>
+        <input id="search" type="text" (keypress)="handlekeypress($event)">
       </div>
     <div class="taskview">
         <div class="list">
-            <h2>Lists</h2>
+            <div class="title"><h2>Lists</h2></div>
             <div class="listitemscont">
              <a  (click)="onListselected(list.title)" class="listitem" *ngFor="let list of lists" 
              [ngClass]="{'selected': list.title === selectedListTitle}" >
@@ -40,10 +45,33 @@
              </a>
             </div>
           <button class="addlist" routerLink="/new-list">Create list +</button>
-        </div>
+        </div> 
+        
         <div class="tasks">
-          
-            <h2>Tasks</h2>
+          <div class="topbar">
+           <div class="title"><h2>Tasks</h2></div> 
+           <div class="dropdown">
+            <div class="dropdown is-hoverable is-right" >
+              <div class="dropdown-trigger">
+                <button class="button" aria-haspopup="true">
+                  
+                  <span class="icon is-small">
+                    <i class="fas fa-cog" aria-hidden="true"></i>
+                  </span>
+                </button>
+              </div>
+              <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+                <div class="dropdown-content">
+                  <a href="#" class="dropdown-item"> Edit </a>
+                  <a href="#" class="dropdown-item has-text-danger" (click)="onDeleteClickList()"> Delete </a>
+                </div>
+              </div>
+            </div>
+            </div>
+            </div>
+            
+            
+            
         <div class="taskitemscont">
           <div class="empty-state-text" id="empty-text"></div>
             <div class="taskitem" *ngFor="let task of tasks" (click)="onTaskClick(task)" [ngClass]="{'completed':task.completed}">
@@ -55,6 +83,7 @@
             </div>
         </div>
         </div>
-        </div>
+      
+        
         
         

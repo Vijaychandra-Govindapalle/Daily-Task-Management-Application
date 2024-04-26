@@ -26,7 +26,7 @@ export class TaskService {
       startTime: startingTime.toISOString(),
       endTime: endingTime.toISOString()
     };
-    return this.webReqService.post('lists', payload);
+    return this.webReqService.post(`lists`, payload);
   }
   createTask(title: string, listTitle: string, selectedDate: Date) {
     const payload = {
@@ -34,7 +34,7 @@ export class TaskService {
       listtitle: listTitle,
       date: selectedDate.toISOString()
     };
-    return this.webReqService.post('lists', payload);
+    return this.webReqService.post(`lists`, payload);
   }
   fetchListsByDate(selectedDate: Date): Observable<any> {
     return this.webReqService.get(`lists`,selectedDate);
@@ -43,7 +43,7 @@ export class TaskService {
     return this.webReqService.get(`lists`,selectedDate);
   }*/
   fetchtasks(listtitle: string,selectedDate:Date,selectedTime: Time){
-    return this.webReqService.get(`lists`,selectedDate,selectedTime,undefined,listtitle)
+    return this.webReqService.get(`lists`,selectedDate,undefined,undefined,listtitle)
   }
   Search(text: string,date: Date,listtitle?:string){
     return this.webReqService.get(`lists`,date,undefined,text,listtitle)
@@ -55,7 +55,11 @@ export class TaskService {
       completed: !task.completed
     };
   
-    return this.webReqService.patch('lists', payload);
+    return this.webReqService.patch(`lists`, payload);
   }
 
+  deleteList(listtitle: string){
+    this.webReqService.delete(`lists`,listtitle)
+  }
+  
 }

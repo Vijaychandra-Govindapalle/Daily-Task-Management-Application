@@ -7,8 +7,8 @@
           <div *ngIf="endTime">End: {{ endTime | date: 'hh:mm a' }}</div>
           
         
-        
-      <input #listtitle type="text" id="listtitle" placeholder="Enter the title">
+        <label for="listtitle"></label>
+      <input id="listtitle" #listtitle type="text" id="listtitle" placeholder="Enter the title">
       <div class="errormessage1" *ngIf="errormessage1">
         <p>{{errormessage1}}</p>
       </div>
@@ -24,4 +24,6 @@
       </div>
     </div>
 </div>
+
+
 

@@ -10,18 +10,48 @@ const bodyParser = require('body-parser');
 // Load in the mongoose models
 const {List,Task,Day,User,Time} = require('./db/models');
 
+const jwt = require('jsonwebtoken')
+
 /* MIDDLEWARE */
 
 
 // Load middleware
 app.use(bodyParser.json());
 //CORS 
+
+
 app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*"); 
-    res.header("Access-Control-Allow-Methods","GET, POST, PATCH, PUT, HEAD, OPTIONS, DELETE");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET, POST, HEAD, OPTIONS, PUT, PATCH, DELETE");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, x-access-token, x-refresh-token, _id");
+    
+
+    res.header(
+        'Access-Control-Expose-Headers',
+        'x-access-token, x-refresh-token',
+        
+    )
     next();
   });
+
+  // check whether the request has a valid JWT access Token 
+  let authenticate = (req, res, next) => {
+    let token = req.header('x-access-token');
+
+    // verify the JWT
+    jwt.verify(token, User.getJWTSecret(), (err, decoded) => {
+       if (err) {
+        // there was an error
+        // jwt is invalid - * DO NOT AUTHENTICATE *
+        res.status(401).send(err);
+
+       }else {
+        //jwt is valid
+        req.user_id = decoded._id;
+        next();
+       }
+    })
+  }
  
 
   // Verify Refresh Token Middleware (which will be verifying the session)
@@ -85,7 +115,8 @@ app.use(function(req, res, next) {
  * Get /lists
  * Purpose: Get all lists
  */
-app.get('/lists', (req, res) => {
+app.get('/lists', authenticate, (req, res) => {
+    //  We want to return an array of all the lists that belong to the authenticated user
   let query = {};
   if (req.query.title) {
       query.title = req.query.title;
@@ -93,8 +124,10 @@ app.get('/lists', (req, res) => {
   if (req.query.date) {
       query.Day = req.query.date;
   }
+  query._userId = req.user_id
   if (req.query.listtitle) {
       query.listTitle = req.query.listtitle;
+  
       Task.find(query)
           .then((tasks) => {
               res.send(tasks);
@@ -104,6 +137,7 @@ app.get('/lists', (req, res) => {
               res.status(500).send("Error fetching tasks: " + error.message);
           });
   } else {
+   
       List.find(query)
           .then((lists) => {
               res.send(lists);
@@ -121,87 +155,220 @@ app.get('/lists', (req, res) => {
  * POST /Lists
  * Purpose: Create a list
  */
-app.post('/lists', (req, res) => {
+app.post('/lists',authenticate, (req, res) => {
     // We want to create a new list or task and return the new document back to the user
+
+    
     if (req.body.tasktitle) {
-      let newTask = new Task({
-        title: req.body.tasktitle,
-        listTitle: req.body.listtitle,
-        Day: req.body.date,
-      });
-      newTask.save().then((taskdoc) => {
-        res.send(taskdoc);
-      }).catch(error => {
-        res.status(500).send("Error creating task: " + error.message);
-      });
+        List.findOne({
+            title: req.body.listtitle,
+            _userId: req.user_id
+        }).then((list) => {
+            if (list) {
+                return true;
+            }
+            return false
+
+        }).then((canCreateTasks) => {
+            if(canCreateTasks){
+                // list object is valid
+                // therefore the currently authenticated user can create new tasks
+                let newTask = new Task({
+                    title: req.body.tasktitle,
+                    listTitle: req.body.listtitle,
+                    Day: req.body.date,
+                    _userId: req.user_id,
+                });
+                newTask.save().then((taskdoc) => {
+                    res.send(taskdoc);
+                }).catch(error => {
+                    res.status(500).send("Error creating task: " + error.message);
+                });
+            } else {
+                
+                res.sendStatus(404);
+            }
+
+        })  
+                
+               
     } else {
-      let newList = new List({
-        title: req.body.title,
-        Day: req.body.date,
-        startTime: req.body.startTime,
-        endTime: req.body.endTime
-      });
-  
-      newList.save().then((listDoc) => {
-        res.send(listDoc);
-      }).catch(error => {
-        res.status(500).send("Error creating list: " + error.message);
-      });
+        // Code for creating a new list
+        let newList = new List({
+            title: req.body.title,
+            _userId: req.user_id,
+            Day: req.body.date,
+            startTime: req.body.startTime,
+            endTime: req.body.endTime
+        });
+    
+        newList.save().then((listDoc) => {
+            res.send(listDoc);
+        }).catch(error => {
+            res.status(500).send("Error creating list: " + error.message);
+        });
     }
-  });
+    
+    });
 
 /**
  * PATH /lists
  * Purpose: Update a specified list
  */
-app.patch('/lists', (req, res) => {
-  // Construct query object based on query parameters in the request
-  let query = {};
-  if (req.body.taskTitle) {
-      query.title = req.body.taskTitle;
-  }
-  if (req.body.listTitle) {
-      query.listTitle = req.body.listTitle;
-  }
-  if (req.body.date) {
-      query.Day = req.body.date;
-  }
+app.patch('/lists', authenticate, (req, res) => {
+    // Construct query object based on query parameters in the request
+    let query = {};
+    if (req.body.taskTitle) {
+        query.title = req.body.tasktitle;
+    }
+    if (req.body.listTitle) {
+        query.listTitle = req.body.listtitle;
+    }
+    if (req.body.date) {
+        query.Day = req.body.date;
+    }
 
-  // Update the specified list or task with the new values specified in the JSON body of the request
-  let updateData = req.body;
+    // Update the specified list or task with the new values specified in the JSON body of the request
+    let updateData = req.body;
 
-  // Determine whether to update a task or a list based on the presence of 'listtitle' in the query
-  let updatePromise;
-  if (req.body.listTitle) {
-      updatePromise = Task.findOneAndUpdate(query, updateData);
-  } else {
-      updatePromise = List.findOneAndUpdate(query, updateData);
-  }
+    // Determine whether to update a task or a list based on the presence of 'listtitle' in the query
+    if (req.body.listtitle) {
+        List.findOne({
+            listTitle: req.body.listtitle,
+            _userId: req.user_id
+        }).then((list) => {
+            if (list) {
+                return true
+            }
+            return false
+        }).then((canUpdateTasks) => {
+            if(canUpdateTasks){
+                Task.findOneAndUpdate(query, updateData)
+                .then((result) => {
+                    if (result) {
+                        res.send({ message: 'Updated Successfully' });
+                    } else {
+                        res.send({ message: 'No matching record' }); // Provide a more specific error message
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error updating:", error);
+                    res.send({ message: 'Error updating: ' + error.message });
+                });
 
-  updatePromise.then((result) => {
-      if (result) {
-          res.send({message : 'Updated Successfully'});
-      } else {
-        res.send({message : 'No matching record'});// Provide a more specific error message
-      }
-  }).catch((error) => {
-      console.error("Error updating:", error);
-      res.send({message : 'Error updating: ' +error.message});
-  });
+            }
+              
+        
+                // list object is valid
+                // therefore the currently authenticated user can update tasks
+               
+             else {
+                res.send({ message: 'Unauthorized' }); // User does not have permission to update tasks
+            }
+        });
+    } else {
+        query._userId = req.user_id;
+        List.findOneAndUpdate(query, updateData)
+            .then((result) => {
+                if (result) {
+                    res.send({ message: 'Updated Successfully' });
+                } else {
+                    res.send({ message: 'No matching record' }); // Provide a more specific error message
+                }
+            })
+            .catch((error) => {
+                console.error("Error updating:", error);
+                res.send({ message: 'Error updating: ' + error.message });
+            });
+    }
 });
+
 
 /**
  * Delete /lists/:id
  * Purpose: Delete a list
  */
-app.delete('/lists/:id',(req,res)=>{
+/*app.delete('/lists',(req,res)=>{
   //We want to delete the specified list
   List.findOneAndDelete({
-    _id: req.params.id
+    title: req.params.listTitle
 }).then((removedListDoc)=>{
     res.send(removedListDoc);
+
+    // delete all the tasks that are in the deleted list
+    deleteTasksFromList(removedListDoc.title)
 })
-})
+})*/
+
+app.delete('/lists', authenticate, (req, res) => {
+    // We want to delete the specified list or task
+    
+    // Construct the query object based on the request body
+    let query = {};
+    
+        query.title = req.query.listtitle;
+   
+    
+    query._userId = req.user_id; // Ensure that only the authenticated user's lists/tasks are deleted
+
+    // Check if it's a task deletion or a list deletion
+  /*  if (req.query.listtitle) {
+        // Delete task
+        List.findOne({
+            listTitle: req.query.listtitle,
+            _userId: req.user_id
+        }).then((list) => {
+            if (list) {
+                // list object is valid
+                // therefore the currently authenticated user can update tasks
+                return true
+            }
+            return false
+        }).then((canDeleteTasks) => {
+            if(canDeleteTasks){
+                Task.findOneAndDelete(query)
+                .then((removedTaskDoc) => {
+                    if (removedTaskDoc) {
+                        res.send(removedTaskDoc);
+                    } else {
+                        res.status(404).send("Task not found");
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error deleting task:", error);
+                    res.status(500).send("Error deleting task: " + error.message);
+                });
+
+            }
+
+        
+               
+             else {
+                res.send({ message: 'Unauthorized' }); // User does not have permission to update tasks
+            }
+        })
+    } else {*/
+        // Delete list
+        List.findOneAndDelete(query)
+        .then((removedListDoc) => {
+            if (removedListDoc) {
+                // Delete all the tasks that are in the deleted list
+                deleteTasksFromList(req.query.listtitle).then(() => {
+                    res.send(removedListDoc);
+                }).catch((error) => {
+                    console.error("Error deleting tasks from list:", error);
+                    res.status(500).send("Error deleting tasks from list: " + error.message);
+                });
+            } else {
+                res.status(404).send("List not found");
+            
+        }})
+    })
+    
+    
+    
+
+
 /**
  * Get /lists/:listId/tasks
  * Purpose: Get all tasks in a specific list
@@ -226,15 +393,7 @@ app.delete('/lists/:id',(req,res)=>{
  * Purpose: Delete an existing task
  */
 
-app.delete('/lists/:listId/tasks/:taskId', (req, res)=>{
-    //Delete an existing task by the specified id
-    Task.findOneAndDelete({
-        _id: req.params.taskId,
-        _listId: req.params.listId
-    }).then((removedTaskDoc)=>{
-        res.send(removedTaskDoc)
-    })
-})
+
 
 
 /*USER ROUTES */
@@ -314,6 +473,15 @@ app.get('/users/me/access-token', verifySession, (req, res) => {
       res.status(400).send(e);
   });
 })
+
+/*Helper Methods */
+let deleteTasksFromList = (listTitle) => {
+    Task.deleteMany({
+       listTitle
+    }).then(() => {
+        console.log("Tasks  were deleted!")
+    })
+}
 
 app.listen(3000,()=>{
     console.log("Server is listening to the port 3000");

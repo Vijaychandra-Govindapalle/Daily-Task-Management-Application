@@ -201,5 +201,14 @@ button.example-custom-date-class {
     margin-right: 10px;
     
   }
+  .taskview .tasks .topbar .dropdown{
+    
+       position: absolute;
+       right: 20px;
+       top: 10px;
+        
+        
+      
+  }
   
 
