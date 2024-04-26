@@ -351,7 +351,9 @@ app.delete('/lists', authenticate, (req, res) => {
         // Delete list
         List.findOneAndDelete(query)
         .then((removedListDoc) => {
-            if (removedListDoc) {
+            res.send(removedListDoc)
+            deleteTasksFromList(query)
+          /*  if (removedListDoc) {
                 // Delete all the tasks that are in the deleted list
                 deleteTasksFromList(req.query.listtitle).then(() => {
                     res.send(removedListDoc);
@@ -362,7 +364,7 @@ app.delete('/lists', authenticate, (req, res) => {
             } else {
                 res.status(404).send("List not found");
             
-        }})
+        }*/})
     })
     
     
@@ -475,11 +477,12 @@ app.get('/users/me/access-token', verifySession, (req, res) => {
 })
 
 /*Helper Methods */
-let deleteTasksFromList = (listTitle) => {
+let deleteTasksFromList = (query) => {
     Task.deleteMany({
-       listTitle
+       query
     }).then(() => {
         console.log("Tasks  were deleted!")
+        
     })
 }
 

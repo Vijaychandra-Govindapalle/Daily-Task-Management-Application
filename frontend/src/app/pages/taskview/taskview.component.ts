@@ -6,7 +6,7 @@ import {  MatNativeDateModule } from '@angular/material/core';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import { NewListComponent } from '../new-list/new-list.component';
-import { RouterModule } from '@angular/router'; 
+import { Router, RouterModule } from '@angular/router'; 
 import { CommonModule, Time } from '@angular/common';
 import { Task } from '../../models/task.model';
 import { List } from '../../models/list.model';
@@ -59,7 +59,7 @@ export class TaskviewComponent {
     previousselectedTime: Date | null = null
     isTime1Selected: boolean = false;
 
-  constructor(private taskService: TaskService) {}
+  constructor(private taskService: TaskService,private router:Router) {}
 
   ngOnInit(): void {
     this.loadHighlightedDates(); // Load highlighted dates from localStorage on component initialization
@@ -252,7 +252,10 @@ export class TaskviewComponent {
 
   onDeleteClickList() {
     
-    this.taskService.deleteList(this.selectedListTitle!)
+    this.taskService.deleteList(this.selectedListTitle!).subscribe((res:any)=>{
+      this.router.navigate(['/lists'])
+      console.log(res)
+    })
   
   
 }

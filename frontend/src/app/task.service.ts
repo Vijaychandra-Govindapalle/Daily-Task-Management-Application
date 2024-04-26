@@ -59,7 +59,7 @@ export class TaskService {
   }
 
   deleteList(listtitle: string){
-    this.webReqService.delete(`lists`,listtitle)
+   return  this.webReqService.delete(`lists`,listtitle)
   }
   
 }
