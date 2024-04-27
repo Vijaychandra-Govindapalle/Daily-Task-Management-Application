@@ -39,8 +39,26 @@
             <div class="listitemscont">
              <a  (click)="onListselected(list.title)" class="listitem" *ngFor="let list of lists" 
              [ngClass]="{'selected': list.title === selectedListTitle}" >
+             <div class="dropdown is-hoverable is-right">
+              <div class="dropdown-trigger ">
+                <button class="button" aria-haspopup="true">
+                  <span>{{list.title}}</span>
+                </button>
+              </div>
+              <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+                <div class="dropdown-content">
+                  <div class="dropdown-item">
+                    <p>
+                      <span id="startTime">{{list.startTime | date: 'hh:mm a'}}</span>
+                      <span>-</span>
+                      <span id="endTime">{{list.endTime | date: 'hh:mm a'}}</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
                 <span id="listitemname">
-                  <span id="startTime">{{list.startTime | date: 'hh:mm a'}}</span>{{list.title}}<span id="endTime">{{list.endTime | date: 'hh:mm a'}}</span>
+                  
                 </span>
              </a>
             </div>

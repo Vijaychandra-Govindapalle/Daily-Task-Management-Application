@@ -37,7 +37,11 @@ h2{
     overflow-y: auto;
     scrollbar-width: none;
 }
-.list .listitemscont .listitem {
+
+.list .listitemscont .listitem span{
+    color : black
+}
+.list .listitemscont .listitem .dropdown  .dropdown-trigger .button{
     height: 30px;
     width: 200px;
     display: flex;
@@ -46,24 +50,24 @@ h2{
     background-color: aliceblue;
     margin-top: 10px;
     border-radius: 5px;
-    
-   
+    border:0;
+    margin-left: 5px;
+} 
+.list .listitemscont .listitem .dropdown  .dropdown-trigger .button:hover{
+
+  background-color: lightgray;
 }
 
-.list .listitemscont .listitem span{
-    color : black
-}
+
 
 .list .listitemscont .listitem:hover{
-    background-color:lightgray;
+    
     cursor:pointer;
 }
 .list .listitemscont .listitem:active{
     transform: scale(0.95);
 }
-.list .listitemscont .listitem.selected{
-    background-color:lightseagreen
-}
+
 
 .list .addlist{
     background-color:  rgb(52, 234, 52);
