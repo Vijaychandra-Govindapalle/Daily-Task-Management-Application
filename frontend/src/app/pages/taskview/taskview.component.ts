@@ -251,12 +251,20 @@ export class TaskviewComponent {
   }
 
   onDeleteClickList() {
-    
-    this.taskService.deleteList(this.selectedListTitle!).subscribe((res:any)=>{
-      this.router.navigate(['/lists'])
-      console.log(res)
-    })
+    this.taskService.deleteList(this.selectedListTitle!).subscribe((res: any) => {
+      // Remove the deleted list from the local data
+      this.lists = this.lists.filter((list: any) => list.title !== this.selectedListTitle);
+      
+      // Optionally clear the selectedListTitle if needed
+      this.selectedListTitle = null;
+  
+      // Optionally navigate to a different route
+      this.router.navigate(['/lists']);
+  
+      console.log(res);
+    });
+  }
   
   
-}
+  
 }
