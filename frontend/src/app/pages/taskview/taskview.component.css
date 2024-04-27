@@ -8,6 +8,13 @@
     overflow: hidden;
     margin: 0;
 }
+.taskmanagement .time{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    margin-right: 100px;
+    margin-bottom: 250px;
+}
 .taskmanagement .taskview{
     display: flex;
     height: 500px;
