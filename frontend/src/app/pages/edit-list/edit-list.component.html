@@ -1,0 +1,29 @@
+<div class="centercontent">
+    <div class="createList">
+       <h1>Edit List</h1>
+        <div class="selected-date" *ngIf="selectedDate">Selected Date: {{ selectedDate | date: 'dd/MM/yyyy' }}</div>
+        <div class="selected-time-range">
+          <div *ngIf="startTime">Start: {{ startTime | date: 'hh:mm a' }}</div>
+          <div *ngIf="endTime">End: {{ endTime | date: 'hh:mm a' }}</div>
+          
+        
+        <label for="listtitle"></label>
+      <input id="listtitle" #listtitle type="text" id="listtitle" placeholder="Enter the title">
+      <div class="errormessage1" *ngIf="errormessage1">
+        <p>{{errormessage1}}</p>
+      </div>
+      <div class="buttons">
+        <button  id="add"  (click)="editList(listtitle.value,selectedDate!)">Save</button>
+        <span><button id="cancel" (click)="goback()">Back</button></span>
+    </div>
+    <div class="message" *ngIf="message">
+      <p>{{message}}</p>
+    </div>
+    <div *ngIf="errormessage">
+        <p>{{errormessage}}</p>
+      </div>
+    </div>
+</div>
+
+
+

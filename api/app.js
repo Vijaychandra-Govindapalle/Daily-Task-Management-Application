@@ -218,23 +218,18 @@ app.post('/lists',authenticate, (req, res) => {
 app.patch('/lists', authenticate, (req, res) => {
     // Construct query object based on query parameters in the request
     let query = {};
-    if (req.body.taskTitle) {
-        query.title = req.body.tasktitle;
-    }
-    if (req.body.listTitle) {
-        query.listTitle = req.body.listtitle;
-    }
-    if (req.body.date) {
-        query.Day = req.body.date;
-    }
 
     // Update the specified list or task with the new values specified in the JSON body of the request
     let updateData = req.body;
 
     // Determine whether to update a task or a list based on the presence of 'listtitle' in the query
-    if (req.body.listtitle) {
+    if (req.body.selectedTask) {
+        query.title = req.body.selectedTask;
+        query.Day = req.body.date;
+        query.listTitle = req.body.listtitle;
+
         List.findOne({
-            listTitle: req.body.listtitle,
+            title: req.body.listtitle,
             _userId: req.user_id
         }).then((list) => {
             if (list) {
@@ -267,7 +262,10 @@ app.patch('/lists', authenticate, (req, res) => {
             }
         });
     } else {
+
         query._userId = req.user_id;
+        query.Day = req.body.date;
+        query.title = req.body.listtitle
         List.findOneAndUpdate(query, updateData)
             .then((result) => {
                 if (result) {
@@ -280,7 +278,8 @@ app.patch('/lists', authenticate, (req, res) => {
                 console.error("Error updating:", error);
                 res.send({ message: 'Error updating: ' + error.message });
             });
-    }
+        }
+    
 });
 
 
@@ -306,16 +305,18 @@ app.delete('/lists', authenticate, (req, res) => {
     // Construct the query object based on the request body
     let query = {};
     
-        query.title = req.query.listtitle;
+        
    
     
     query._userId = req.user_id; // Ensure that only the authenticated user's lists/tasks are deleted
 
     // Check if it's a task deletion or a list deletion
-  /*  if (req.query.listtitle) {
+    if (req.query.tasktitle) {
         // Delete task
+        query.title = req.query.tasktitle
+        query.listTitle = req.query.listtitle
         List.findOne({
-            listTitle: req.query.listtitle,
+            title: req.query.listtitle,
             _userId: req.user_id
         }).then((list) => {
             if (list) {
@@ -347,11 +348,14 @@ app.delete('/lists', authenticate, (req, res) => {
                 res.send({ message: 'Unauthorized' }); // User does not have permission to update tasks
             }
         })
-    } else {*/
+    } else {
         // Delete list
+        query.title = req.query.listtitle;
         List.findOneAndDelete(query)
         .then((removedListDoc) => {
-            if (removedListDoc) {
+            res.send(removedListDoc)
+            deleteTasksFromList(query)
+          /*  if (removedListDoc) {
                 // Delete all the tasks that are in the deleted list
                 deleteTasksFromList(req.query.listtitle).then(() => {
                     res.send(removedListDoc);
@@ -362,7 +366,8 @@ app.delete('/lists', authenticate, (req, res) => {
             } else {
                 res.status(404).send("List not found");
             
-        }})
+        }*/})
+    }
     })
     
     
@@ -475,11 +480,12 @@ app.get('/users/me/access-token', verifySession, (req, res) => {
 })
 
 /*Helper Methods */
-let deleteTasksFromList = (listTitle) => {
+let deleteTasksFromList = (query) => {
     Task.deleteMany({
-       listTitle
+       query
     }).then(() => {
         console.log("Tasks  were deleted!")
+        
     })
 }
 
