@@ -77,11 +77,15 @@ export class TaskviewComponent {
     this.taskService.selectedlist$.subscribe(listTitle => {
       this.listTitle = listTitle!;
     });
+    this.onListselected(this.listTitle)
+
+    // Retrieve the selected list title from local storage
 
     if (this.selectedDate !== null) {
       // If a date is selected, fetch the materials/tasks for that date
       this.fetchListsByDate(this.selectedDate);
     }
+    
   }
 
   fetchListsByDate(date: Date): void {
@@ -129,6 +133,9 @@ export class TaskviewComponent {
     this.taskService.selectedDate$.next(this.selectedDate);
     if (this.selectedDate !== null) {
       this.tasks = [];
+      const emptytext = document.getElementById('empty-text')
+      emptytext!.innerText = '';
+      this.selectedListTitle = null
       this.fetchListsByDate(this.selectedDate);
     } else {
       alert("Please select the date");
@@ -160,6 +167,9 @@ export class TaskviewComponent {
     this.taskService.selectedTime2$.next(this.selectedTime2);
     // Handle time selection for the second time picker if needed
   }
+  saveTaskTitle(tasktitle:string){
+    this.taskService.selectedTask.next(tasktitle)
+  }
 
 
   onListselected(listtitle: string): void {
@@ -173,14 +183,24 @@ export class TaskviewComponent {
       if (this.selectedListTitle === listtitle) {
         this.selectedListTitle = null; // Deselect if already selected
         this.tasks = [];
+        emptytext!.innerText = '';
         
       } else {
         this.selectedListTitle = listtitle; // Select the clicked item
         this.taskService.selectedlist$.next(this.selectedListTitle);
         this.listTitle = listtitle;
         this.tasks = tasks; // Assign new tasks fetched for the selected list
+        this.fetchTasksForSelectedList();
       }
     });
+  }
+
+  fetchTasksForSelectedList(): void {
+    if (this.selectedListTitle && this.selectedDate) {
+      this.taskService.fetchtasks(this.selectedListTitle, this.selectedDate, this.selectedTime!).subscribe((tasks: Task[]) => {
+        this.tasks = tasks;
+      });
+    }
   }
 
   handlekeypress(event: KeyboardEvent): void {
@@ -254,7 +274,7 @@ export class TaskviewComponent {
     this.taskService.deleteList(this.selectedListTitle!).subscribe((res: any) => {
       // Remove the deleted list from the local data
       this.lists = this.lists.filter((list: any) => list.title !== this.selectedListTitle);
-      
+      this.tasks = []
       // Optionally clear the selectedListTitle if needed
       this.selectedListTitle = null;
   
@@ -265,6 +285,15 @@ export class TaskviewComponent {
     });
   }
   
+  onDeleteTaskClick(tasktitle:string) {
+     this.taskService.deleteTask(tasktitle,this.selectedListTitle!).subscribe((res: any) => {
+      this.tasks = this.tasks?.filter((task:any)=>task.title !== tasktitle);
+      
+      this.router.navigate(['/lists']);
   
+      console.log(res);
+     })
+  }
   
+
 }

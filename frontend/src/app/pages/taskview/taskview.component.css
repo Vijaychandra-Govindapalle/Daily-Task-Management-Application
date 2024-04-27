@@ -97,27 +97,39 @@ h2{
     margin-top: 70px;
    margin-left: 0;
 }
-.tasks .taskitemscont .taskitem{
-        display: flex;
-       
-        align-items: center;
-        width: 600px;
-        height: 35px;
-        background-color: white;
-        padding: 5px;
-        padding-left: 20px;
-        margin-top: 10px;
-        border-radius: 5px;
-        transition :ease 0.2s;
-      
+.tasks .taskitemscont {
+    position: absolute;
+    margin-top: 70px;
+    margin-left: 0;
+    height: 400px; /* Set a fixed height for the container */
+    overflow-y: auto; /* Enable vertical scrolling */
+    margin-top: 40px;
 }
+
+.tasks .taskitemscont .taskitem {
+    display: flex;
+    align-items: center;
+    width: 600px;
+    height: 45px;
+    background-color: white;
+    padding: 5px;
+    padding-left: 20px;
+    margin-top: 10px;
+    border-radius: 5px;
+    transition: ease 0.2s;
+    
+}
+.tasks .taskitemscont::-webkit-scrollbar {
+    display: none; /* Hide the scrollbar */
+}
+
 .addtask{
     display: flex;
     justify-content: center;
     align-items: center;
-    position: absolute;
-    left: 600px;
-    top: 300px;
+    position: fixed;
+    left: 1370px;
+    top: 530px;
     height: 50px;
     width: 50px;
     border-radius: 50%;
@@ -137,6 +149,16 @@ h2{
  .tasks .taskitemscont .taskitem:not(.completed):hover{
     box-shadow: 0 4px 8px 0 gray;
     cursor: pointer;
+
+ }
+ .tasks .taskitemscont .taskitem:not(.completed):hover .task-buttons{
+    opacity: 1;
+    transition: opacity 0.2s; transform: 0.2s;
+    transform: scale(1)
+ }
+ .tasks .taskitemscont .taskitem .task-buttons{
+    opacity: 0;
+    transform: scale(0.5);
  }
  .tasks .taskitemscont .taskitem:not(.completed):active{
     transform: scale(0.95);
@@ -145,6 +167,16 @@ h2{
     text-decoration: line-through;
    opacity: 0.6;
  }
+ .tasks .taskitemscont .taskitem{
+    display: flex;
+    
+ }
+ .tasks .taskitemscont .taskitem.task-text{
+    flex-grow: 1;
+}
+.tasks .taskitemscont .taskitem{
+    align-items: center;
+}
  .search {
     display: flex;
     justify-content: center;

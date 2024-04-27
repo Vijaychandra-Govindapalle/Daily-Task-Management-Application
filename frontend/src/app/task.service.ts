@@ -15,6 +15,7 @@ export class TaskService {
   selectedlist$: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
   selectedTime1$: BehaviorSubject<Date| null> = new BehaviorSubject<Date| null>(null);
   selectedTime2$: BehaviorSubject<Date| null> = new BehaviorSubject<Date| null>(null);
+  selectedTask: BehaviorSubject<string|null> = new BehaviorSubject<string|null>(null)
 
 
   constructor(private webReqService: WebRequestService) { }
@@ -59,7 +60,28 @@ export class TaskService {
   }
 
   deleteList(listtitle: string){
-   return  this.webReqService.delete(`lists`,listtitle)
+   return  this.webReqService.delete(`lists`,listtitle,undefined)
   }
   
+  editList(listtitle: string,selectedList:string,date: Date){
+    const payload = {
+      listtitle:selectedList,
+      date:date,
+      title:listtitle
+    }
+   return this.webReqService.patch(`lists`,payload)
+  }
+  editTask(tasktitle: string,selectedTask:string,selectedList:string,date: Date){
+    const payload = {
+      title: tasktitle,
+      selectedTask: selectedTask,
+      date:date,
+      listtitle:selectedList
+    }
+   return this.webReqService.patch(`lists`,payload)
+  }
+
+  deleteTask(tasktitle:string, listtitle:string){
+    return this.webReqService.delete(`lists`,listtitle,tasktitle)
+  }
 }

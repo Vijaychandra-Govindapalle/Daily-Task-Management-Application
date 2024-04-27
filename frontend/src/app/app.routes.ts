@@ -7,6 +7,8 @@ import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { inject } from '@angular/core';
 import { AuthGuard } from './auth.guard';
 import { SignupComponent } from './pages/signup/signup.component';
+import { EditListComponent } from './pages/edit-list/edit-list.component';
+import { EditTaskComponent } from './pages/edit-task/edit-task.component';
 
 export const routes: Routes = [
     {
@@ -15,6 +17,14 @@ export const routes: Routes = [
     {
         path :'new-list',
         component : NewListComponent
+    },
+    {
+        path :'edit-list',
+        component : EditListComponent
+    },
+    {
+        path :'edit-task',
+        component : EditTaskComponent
     },
     {
         path:'new-task',

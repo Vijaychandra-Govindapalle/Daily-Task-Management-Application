@@ -43,10 +43,13 @@ export class WebRequestService {
     return this.http.patch(`${this.ROOT_URL}/${uri}`, payload);
   }
 
-  delete(uri: string,listtitle:string){
+  delete(uri: string,listtitle:string,tasktitle?:string){
     let params = new HttpParams();
    
     params = params.set('listtitle',listtitle);
+    if(tasktitle){
+    params = params.set('tasktitle',tasktitle)
+    }
     
    
     

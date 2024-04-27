@@ -62,7 +62,7 @@
               </div>
               <div class="dropdown-menu" id="dropdown-menu4" role="menu">
                 <div class="dropdown-content">
-                  <a  class="dropdown-item"> Edit </a>
+                  <a  class="dropdown-item" routerLink="/edit-list"> Edit </a>
                   <a  class="dropdown-item has-text-danger" (click)="onDeleteClickList()"> Delete </a>
                 </div>
               </div>
@@ -74,9 +74,28 @@
             
         <div class="taskitemscont">
           <div class="empty-state-text" id="empty-text"></div>
+          <div id="listoftasks">
             <div class="taskitem" *ngFor="let task of tasks" (click)="onTaskClick(task)" [ngClass]="{'completed':task.completed}">
-                <span>{{task.title}}</span>
+              <div class="task-text">
+                <p>{{ task.title }}</p>
+              </div>
+              <div class="task-buttons" style="margin-left: 500px; position: absolute;">
+    
+                <button class="button is-small" (click)="saveTaskTitle(task.title)" routerLink="/edit-task" >
+                  <div class="icon">
+                    <i class="fas fa-edit "></i>
+                  </div>
+                </button>
+    
+                <button class="button is-danger is-small" (click)="onDeleteTaskClick(task.title)"  style="margin-left: 10px;">
+                  <div class="icon">
+                    <i class="fas fa-trash"></i>
+                  </div>
+                </button>
+    
+              </div>
             </div>
+          </div>
             <div routerLink="/new-task" class="addtask">
                 <span>+</span>
             </div>
