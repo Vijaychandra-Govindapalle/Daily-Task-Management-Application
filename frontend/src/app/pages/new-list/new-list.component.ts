@@ -47,6 +47,7 @@ export class NewListComponent {
                 this.errormessage1 = '';
                 this.taskservice.createList(title, this.selectedDate!,this.startTime!,this.endTime!).subscribe((response: any) => {
                   console.log(response);
+                  this.router.navigate(['/lists'])
                   this.message = 'List created successfully';
                 });
               }
