@@ -4,11 +4,12 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { List } from '../../models/list.model';
+import { TaskviewComponent } from '../taskview/taskview.component';
 
 @Component({
   selector: 'app-edit-list',
   standalone: true,
-  imports: [RouterModule, CommonModule],
+  imports: [RouterModule, CommonModule,TaskviewComponent],
   templateUrl: './edit-list.component.html',
   styleUrl: './edit-list.component.css'
 })

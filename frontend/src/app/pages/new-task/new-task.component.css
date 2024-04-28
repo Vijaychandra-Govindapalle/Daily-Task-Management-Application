@@ -1,90 +1,70 @@
-.centercontent{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-.centercontent .createTask{
+.centercontent .createTask {
     display: flex;
     flex-direction: column;
     padding: 35px;
-    height: fit-content;
-    width: fit-content;
-    background-color: white;
-    border-radius: 7px;
+    width: 600px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
-.centercontent .createTask h1{
-    font-size: xx-large;
-    text-transform:uppercase;
-}
-.centercontent .createTask #tasktitle{
-  height: 40px;
-  width: 95%;
-  font-size: x-large;
-  background-color: aliceblue;
-  padding:  0 10px;
-  outline: 0;
-  border: 0;
-  border-radius: 10px;
-  margin-right: 10px;
-}
-.centercontent .createTask #tasktitle:focus{
-    border: 2px solid lightgreen;
-    outline: 2px solid lightgreen ;
-    
 
+.centercontent .createTask h1 {
+    font-size: 24px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    color: #333;
 }
-.centercontent .buttons{
+
+.centercontent .createTask #tasktitle {
+    height: 40px;
+    width: calc(100% - 20px);
+    font-size: 18px;
+    background-color: #f0f0f0;
+    padding: 0 10px;
+    outline: none;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    transition: border-color 0.3s ease;
+}
+
+.centercontent .createTask #tasktitle:focus {
+    border-color: #5cb85c;
+}
+
+.centercontent .buttons {
     display: flex;
-    flex-direction: row;
     justify-content: space-between;
 }
-.centercontent  #add{
-   width: fit-content;
-   margin-left:490px ;
-   margin-top: 20px;
-   border: none;
-   font-size: larger;
-   padding: 10px;
-   border-radius: 4px;
-}
-.centercontent  #add:hover{
-    background-color: lightgreen;
+
+.centercontent #add, .centercontent #cancel {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
     cursor: pointer;
-}
-.centercontent #cancel{
-    width: fit-content;
-    margin-top: 20px;
-    padding: 10px;
-    font-size: larger;
-    margin-left: 5px;
-    border-radius:4px;
+    transition: background-color 0.3s ease;
     border: none;
+}
 
-  
+.centercontent #add:hover, .centercontent #cancel:hover {
+    background-color: #5cb85c;
+    color: #fff;
 }
-.centercontent #cancel:hover{
-    background-color:lightcoral;
-    cursor: pointer;
-}
-.centercontent .createTask .selected-date{
-    display: flex;
-    justify-content: flex-end;
-   
-}
-.centercontent .createTask .selected-list{
-    display: flex;
-    justify-content: flex-end;
 
-
-}
-.centercontent .createTask .selected{
+.centercontent .createTask .selected {
     margin: 10px;
 }
-.errormessage1{
-   top: 20px;
+
+.centercontent .createTask .selected-date,
+.centercontent .createTask .selected-list {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
 }
-.message{
-    display: flex;
-    justify-content: center;
+
+.centercontent .createTask .selected-date .icon,
+.centercontent .createTask .selected-list .icon {
+    font-size: 20px;
+    margin-right: 5px;
 }
