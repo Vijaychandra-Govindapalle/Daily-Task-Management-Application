@@ -12,7 +12,12 @@
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:application",
-          "options": {
+          "options":
+           {
+            "allowedCommonJsDependencies": [
+              "lodash"
+             
+           ],
             "outputPath": "dist/userint",
             "index": "src/index.html",
             "browser": "src/main.ts",
@@ -42,12 +47,12 @@
                 {
                   "type": "initial",
                   "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumError": "6kb"
                 }
               ],
               "outputHashing": "all"

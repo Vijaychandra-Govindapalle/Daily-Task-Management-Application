@@ -1,13 +1,16 @@
 {
   "name": "userint",
   "version": "0.0.0",
+  "main": "main.js",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:Userint": "node dist/userint/server/server.mjs"
+    "serve:ssr:Userint": "node dist/userint/server/server.mjs",
+    "electron": "electron .",
+    "electron-build": "ng build && electron ."
   },
   "private": true,
   "dependencies": {
@@ -26,6 +29,7 @@
     "@angular/ssr": "^17.1.3",
     "@syncfusion/ej2-angular-calendars": "^25.1.37",
     "bulma": "^0.9.4",
+    "electron": "^30.0.1",
     "express": "^4.18.2",
     "localstorage": "^1.0.1",
     "localstorage-polyfill": "^1.0.1",
