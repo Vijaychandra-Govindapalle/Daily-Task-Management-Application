@@ -1,11 +1,14 @@
 <div class="centercontent">
   <div class="createList">
-     <h1>Create a new List</h1>
+     <div class="title"><h2>Create a new List</h2></div>
       <div class="selected">
-        <div class="selected-date" *ngIf="selectedDate"><span class="icon">&#128197;</span> Selected Date: {{ selectedDate | date: 'dd/MM/yyyy' }}</div>
+        <div class="selected-date" *ngIf="selectedDate"><span class="icon">
+          <i class="fa fa-calendar"></i>
+        </span>{{ selectedDate | date: 'dd/MM/yyyy' }}</div>
         <div class="selected-time-range">
-          <div *ngIf="startTime">Start: {{ startTime | date: 'hh:mm a' }}</div>
-          <div *ngIf="endTime">End: {{ endTime | date: 'hh:mm a' }}</div>
+          <div class="startTime" *ngIf="startTime"><span class="icon"><i class="fa-solid fa-hourglass-start"></i></span>{{ startTime | date: 'hh:mm a' }}</div>
+
+          <div class="endTime" *ngIf="endTime"><span class="icon"><i class="fa-solid fa-hourglass-end"></i></span>{{ endTime | date: 'hh:mm a' }}</div>
         </div>
       </div>
       <label for="listtitle"></label>

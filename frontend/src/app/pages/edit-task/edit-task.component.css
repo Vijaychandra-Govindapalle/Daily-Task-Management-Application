@@ -6,6 +6,8 @@
    
 }
 
+
+
 .centercontent .createTask {
     display: flex;
     flex-direction: column;
@@ -16,37 +18,38 @@
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
-.centercontent .createTask h1 {
-    font-size: 24px;
+.centercontent .createTask .title{
+    color: turquoise;
     text-transform: uppercase;
-    margin-bottom: 20px;
-    color: #333;
+
 }
 
 .centercontent .createTask #tasktitle {
     height: 40px;
-    width: calc(100% - 20px);
+    width: 100%;
     font-size: 18px;
-    background-color: #fff;
+    background-color: #f0f0f0;
     padding: 0 10px;
     outline: none;
-    border: 2px solid #5cb85c;
+    border: 2px solid transparent;
+   
     border-radius: 10px;
     margin-bottom: 20px;
     transition: border-color 0.3s ease;
 }
 
 .centercontent .createTask #tasktitle:focus {
-    border-color: #5cb85c;
+    border-color: lightseagreen;
 }
 
 .centercontent .buttons {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
 }
 
 .centercontent #add, .centercontent #cancel {
     padding: 10px 20px;
+    margin-left: 10px;
     font-size: 16px;
     border-radius: 5px;
     cursor: pointer;
@@ -55,15 +58,15 @@
 }
 
 .centercontent #add:hover, .centercontent #cancel:hover {
-    background-color: #5cb85c;
+    background-color:turquoise;
     color: #fff;
 }
 
 .centercontent .createTask .selected-date,
 .centercontent .createTask .selected-list,
 .centercontent .createTask .selected-task {
-    background-color: #f0f0f0;
-    padding: 10px;
+   
+   
     border-radius: 5px;
     margin-bottom: 10px;
 }
@@ -72,20 +75,5 @@
     color: #333;
 }
 
-.centercontent .createTask .selected-list,
-.centercontent .createTask .selected-task {
-    color: #5cb85c;
-}
 
-.centercontent .createTask .selected-list::before,
-.centercontent .createTask .selected-task::before {
-    content: "\2022";
-    color: #5cb85c;
-    margin-right: 5px;
-}
 
-.centercontent .createTask .selected-date::before {
-    content: "\1F4C5";
-    font-size: 20px;
-    margin-right: 5px;
-}

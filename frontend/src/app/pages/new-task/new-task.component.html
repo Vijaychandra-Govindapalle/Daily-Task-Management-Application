@@ -1,9 +1,13 @@
 <div class="centercontent">
   <div class="createTask">
-     <h1>Create a new Task</h1>
+     <div class="title"><h2>Create a new Task</h2></div>
       <div class="selected">
-        <div class="selected-date" *ngIf="selectedDate"><span class="icon">&#128197;</span> Selected Date: {{ selectedDate | date: 'dd/MM/yyyy' }}</div>
-        <div class="selected-list" *ngIf="selectedDate"><span class="icon">&#128203;</span> Selected List: {{listTitle}}</div>
+        <div class="selected-date" *ngIf="selectedDate"><span class="icon">
+          <i class="fa fa-calendar"></i>
+        </span>{{ selectedDate | date: 'dd/MM/yyyy' }}</div>
+        <div class="selected-list" *ngIf="selectedDate"><span class="icon">
+          <i class="fa-solid fa-rectangle-list"></i>
+      </span>{{listTitle}}</div>
       </div>
       <label for="tasktitle"></label>
       <input id="tasktitle" #tasktitle type="text" placeholder="Enter the task">

@@ -15,6 +15,11 @@
     border-radius: 10px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
+.centercontent .createList .title{
+   color:turquoise;
+   text-transform: uppercase;
+
+}
 
 .centercontent .createList h1 {
     font-size: 24px;
@@ -25,7 +30,7 @@
 
 .centercontent .createList #listtitle {
     height: 40px;
-    width: calc(100% - 20px);
+    width:100%;
     font-size: 18px;
     background-color: #f0f0f0;
     padding: 0 10px;
@@ -37,15 +42,16 @@
 }
 
 .centercontent .createList #listtitle:focus {
-    border-color: #5cb85c;
+    border-color: lightseagreen;
 }
 
 .centercontent .buttons {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
 }
 
 .centercontent #add, .centercontent #cancel {
+    margin-left: 10px;
     padding: 10px 20px;
     font-size: 16px;
     border-radius: 5px;
@@ -55,18 +61,13 @@
 }
 
 .centercontent #add:hover, .centercontent #cancel:hover {
-    background-color: #5cb85c;
+    background-color: turquoise;
     color: #fff;
 }
 
-.centercontent .createList .selected-date {
-    background-color: #f0f0f0;
-    padding: 10px;
+.centercontent .createList .selected-date,
+.centercontent .createList .selected-time-range .startTime,
+.centercontent .createList .selected-time-range .endTime{
     border-radius: 5px;
     margin-bottom: 10px;
-}
-
-.centercontent .createList .selected-date .icon {
-    font-size: 20px;
-    margin-right: 5px;
 }

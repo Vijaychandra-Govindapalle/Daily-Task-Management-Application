@@ -1,10 +1,17 @@
 <div class="centercontent">
     <div class="createTask">
-       <h1>Edit a task</h1>
+     <div class="title"><h2>Edit task</h2></div>  
        <div class="selected">
-        <div class="selected-date" *ngIf="selectedDate">Selected Date: {{ selectedDate | date: 'dd/MM/yyyy' }}</div>
-        <div class="selected-list" *ngIf="listTitle">Selected List: {{listTitle}}</div>
-        <div class="selected-task" *ngIf="selectedTask">Selected Task: {{selectedTask}}</div>
+        <div class="selected-date" *ngIf="selectedDate"> <span class="icon">
+          <i class="fa fa-calendar"></i>
+        </span> {{ selectedDate | date: 'dd/MM/yyyy' }}</div>
+        <div class="selected-list" *ngIf="listTitle"><span class="icon">
+          <i class="fa-solid fa-rectangle-list"></i>
+      </span> {{listTitle}}</div>
+        <div class="selected-task" *ngIf="selectedTask">
+          <span class="icon">
+            <i class="fa-solid fa-clipboard-check"></i></span>
+           {{selectedTask}}</div>
         </div>
         <label for="tasktitle"></label>
       <input id="tasktitle" #tasktitle type="text" id="tasktitle" placeholder="Enter the task">

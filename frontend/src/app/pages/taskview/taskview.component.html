@@ -37,8 +37,10 @@
         <div class="list">
             <div class="title"><h2>Lists</h2></div>
             <div class="listitemscont">
-             <a  (click)="onListselected(list.title)" class="listitem" *ngFor="let list of lists" 
-             [ngClass]="{'selected': list.title === selectedListTitle}" >
+              <a (click)="onListselected(list.title)" class="listitem" *ngFor="let list of lists" [ngClass]="{'selected': list.title === selectedListTitle, 'selected-list': list.title === selectedListTitle}">
+                <!-- Your existing list item content here -->
+            
+            
              <div class="dropdown is-hoverable is-right">
               <div class="dropdown-trigger ">
                 <button class="button" aria-haspopup="true">
@@ -46,7 +48,7 @@
                 </button>
               </div>
               <div class="dropdown-menu" id="dropdown-menu4" role="menu">
-                <div class="dropdown-content">
+                <div class="dropdown-content" style="background-color: turquoise;">
                   <div class="dropdown-item">
                     <p>
                       <span id="startTime">{{list.startTime | date: 'hh:mm a'}}</span>
@@ -72,9 +74,8 @@
             <div class="dropdown is-hoverable is-right" >
               <div class="dropdown-trigger">
                 <button class="button" aria-haspopup="true">
-                  
                   <span class="icon is-small">
-                    <i class="fas fa-cog" aria-hidden="true"></i>
+                    <i class="fa fa-cog" aria-hidden="true"></i>
                   </span>
                 </button>
               </div>
@@ -100,15 +101,15 @@
               <div class="task-buttons" style="margin-left: 500px; position: absolute;">
     
                 <button class="button is-small" (click)="saveTaskTitle(task.title)" routerLink="/edit-task" >
-                  <div class="icon">
-                    <i class="fas fa-edit "></i>
-                  </div>
+                  <span class="icon">
+                    <i class="fa fa-edit "></i>
+                  </span>
                 </button>
     
                 <button class="button is-danger is-small" (click)="onDeleteTaskClick(task.title)"  style="margin-left: 10px;">
-                  <div class="icon">
-                    <i class="fas fa-trash"></i>
-                  </div>
+                  <span class="icon">
+                    <i class="fa fa-trash"></i>
+                  </span>
                 </button>
     
               </div>

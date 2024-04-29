@@ -48,6 +48,11 @@ h2{
 .list .listitemscont .listitem span{
     color : black
 }
+.list .listitemscont .dropdown .dropdown-trigger .button{
+    background-color: turquoise;
+    color: white; /* Add this to ensure text is visible */
+}
+
 .list .listitemscont .listitem .dropdown  .dropdown-trigger .button{
     height: 30px;
     width: 200px;
@@ -63,6 +68,10 @@ h2{
 .list .listitemscont .listitem .dropdown  .dropdown-trigger .button:hover{
 
   background-color: lightgray;
+}
+
+.list .listitemscont .listitem .dropdownselected{
+    background-color: turquoise;
 }
 
 
@@ -254,4 +263,5 @@ button.example-custom-date-class {
       
   }
   
+
 
