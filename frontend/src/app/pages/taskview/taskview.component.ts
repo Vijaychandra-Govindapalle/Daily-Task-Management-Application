@@ -23,6 +23,7 @@ import { TimePickerComponent, TimePickerModule } from '@syncfusion/ej2-angular-c
 import { enableRipple } from '@syncfusion/ej2-base';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { WebReqInterceptor } from '../../web-req.interceptor';
+import { NotificationService } from '../../notification.service';
 enableRipple(true);
 
 
@@ -59,10 +60,17 @@ export class TaskviewComponent {
     previousselectedTime: Date | null = null
     isTime1Selected: boolean = false;
 
-  constructor(private taskService: TaskService,private router:Router) {}
+  constructor(private taskService: TaskService,private router:Router,private notificationService: NotificationService) {}
 
   ngOnInit(): void {
     this.loadHighlightedDates(); // Load highlighted dates from localStorage on component initialization
+     // Fetch your lists and other initializations...
+    this.checkUpcomingListStartTimes(); // Call it initially
+  
+  // Schedule periodic checks every 5 minutes (300,000 milliseconds)
+  setInterval(() => {
+    this.checkUpcomingListStartTimes();
+  }, 60000); // Adjust the interval as needed
 
     // Retrieve the selected date from the service on component initialization
     this.taskService.selectedDate$.subscribe(date => {
@@ -123,6 +131,20 @@ export class TaskviewComponent {
       },
       error: (error) => {
         console.error('Error fetching materials:', error);
+      }
+    });
+  }
+
+  checkUpcomingListStartTimes(): void {
+    const currentTime = new Date().getTime();
+    const notificationThreshold = 19 * 60 * 1000; // 5 minutes in milliseconds
+
+    this.lists.forEach((list: { startTime: string | number | Date; title: any; }) => {
+      const startTime = new Date(list.startTime).getTime();
+
+      if (startTime - currentTime <= notificationThreshold && startTime > currentTime) {
+        // Send notification for upcoming list start time
+        this.notificationService.sendNotification(`Upcoming list: ${list.title}`, `Starts at ${list.startTime}`);
       }
     });
   }
