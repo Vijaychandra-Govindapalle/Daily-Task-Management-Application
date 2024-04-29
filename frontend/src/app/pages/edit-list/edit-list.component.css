@@ -5,6 +5,7 @@
     height: 100vh;
 }
 
+
 .centercontent .createList{
     display: flex;
     flex-direction: column;
@@ -25,7 +26,7 @@
 
 .centercontent .createList #listtitle{
     height: 40px;
-    width: calc(100% - 20px);
+    width: 100% ;
     font-size: 18px;
     background-color: #f0f0f0;
     padding: 0 10px;
@@ -35,17 +36,22 @@
     margin-bottom: 20px;
     transition: border-color 0.3s ease;
 }
-
+.centercontent .createList .title{
+    color: turquoise;
+    text-transform: uppercase;
+}
 .centercontent .createList #listtitle:focus{
-    border-color: #5cb85c;
+    border-color:lightseagreen;
 }
 
 .centercontent .buttons{
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
+   
 }
 
 .centercontent #add, .centercontent #cancel{
+    margin-left: 10px;
     padding: 10px 20px;
     font-size: 16px;
     border-radius: 5px;
@@ -55,17 +61,15 @@
 }
 
 .centercontent #add:hover, .centercontent #cancel:hover{
-    background-color: #5cb85c;
+    background-color:turquoise;
     color: #fff;
 }
-.centercontent .createList .selected-date {
-    background-color: #f0f0f0;
-    padding: 10px;
+.centercontent .createList .selected-date,
+.centercontent .createList .selected-List {
+  
+   
     border-radius: 5px;
     margin-bottom: 10px;
 }
 
-.centercontent .createList .selected-date .icon {
-    font-size: 20px;
-    margin-right: 5px;
-}
+

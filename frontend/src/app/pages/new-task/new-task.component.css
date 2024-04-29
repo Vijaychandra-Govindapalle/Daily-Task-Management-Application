@@ -8,6 +8,12 @@
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
+.centercontent .createTask .title{
+    color: turquoise;
+    text-transform: uppercase;
+
+}
+
 .centercontent .createTask h1 {
     font-size: 24px;
     text-transform: uppercase;
@@ -17,7 +23,7 @@
 
 .centercontent .createTask #tasktitle {
     height: 40px;
-    width: calc(100% - 20px);
+    width: 100%;
     font-size: 18px;
     background-color: #f0f0f0;
     padding: 0 10px;
@@ -29,15 +35,16 @@
 }
 
 .centercontent .createTask #tasktitle:focus {
-    border-color: #5cb85c;
+    border-color:lightseagreen;
 }
 
 .centercontent .buttons {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
 }
 
 .centercontent #add, .centercontent #cancel {
+    margin-left: 10px;
     padding: 10px 20px;
     font-size: 16px;
     border-radius: 5px;
@@ -47,24 +54,13 @@
 }
 
 .centercontent #add:hover, .centercontent #cancel:hover {
-    background-color: #5cb85c;
+    background-color: turquoise;
     color: #fff;
-}
-
-.centercontent .createTask .selected {
-    margin: 10px;
 }
 
 .centercontent .createTask .selected-date,
 .centercontent .createTask .selected-list {
-    background-color: #f0f0f0;
-    padding: 10px;
     border-radius: 5px;
     margin-bottom: 10px;
 }
 
-.centercontent .createTask .selected-date .icon,
-.centercontent .createTask .selected-list .icon {
-    font-size: 20px;
-    margin-right: 5px;
-}
